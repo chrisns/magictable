@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "claudia create --name lee-test --region eu-west-2 --api-module index --policies policies/*.json",
-    "deploy": "claudia update"
+    "deploy": "claudia update --no-optional-dependencies"
   },
   "author": "Chris Nesbitt-Smith",
   "license": "MIT",

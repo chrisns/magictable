@@ -44,4 +44,16 @@ api.get('/{domain}/{a}/{b}', function (request) {
   return handler(request.pathParams.domain, request.pathParams.a, request.pathParams.b)
 })
 
+api.get('/{domain}', function () {
+  return `
+<html><body>
+<form onsubmit="window.location = window.location + '/' + document.forms[0].elements.a.value + '/' + document.forms[0].elements.b.value; return false">
+<label for="a">a:</label><br>
+<input type="number" id="a" name="a" min="1" max="100"><br>
+<label for="b">b:</label><br>
+<input type="number" id="b" name="b" min="1" max="100">
+<input type="submit" value="Submit">
+</body></html>`
+},{ success: { contentType: 'text/html'}})
+
 module.exports = api
