@@ -9,6 +9,10 @@ resource "aws_s3_bucket" "bucket" {
   website {
     index_document = "index.html"
   }
+  tags = {
+    customer = "magictable"
+    site = var.url
+  }
 }
 
 resource "aws_s3_bucket_policy" "bucket" {
@@ -29,32 +33,36 @@ resource "aws_s3_bucket_policy" "bucket" {
         ) 
 }
 
-resource "aws_iam_policy" "policy" {
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObject"
-            ],
-            "Resource": "arn:aws:s3:::${var.url}/*"
+# resource "aws_iam_policy" "policy" {
+#   policy = <<EOF
+# {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#         {
+#             "Effect": "Allow",
+#             "Action": [
+#                 "s3:PutObject",
+#                 "s3:GetObject"
+#             ],
+#             "Resource": "arn:aws:s3:::${var.url}/*"
             
-        }
-    ]
-}
-EOF
-}
+#         }
+#     ]
+# }
+# EOF
+# }
 
-resource "aws_iam_role_policy_attachment" "policy-attach" {
-  role       = "lee-test-executor"
-  policy_arn = aws_iam_policy.policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "policy-attach" {
+#   role       = "lee-test-executor"
+#   policy_arn = aws_iam_policy.policy.arn
+# }
 
 resource "aws_route53_zone" "zone" {
   name = replace(var.url, "www.", "")
+  tags = {
+    customer = "magictable"
+    site = var.url
+  }
 }
 
 resource "aws_route53_record" "www" {
