@@ -33,30 +33,6 @@ resource "aws_s3_bucket_policy" "bucket" {
         ) 
 }
 
-# resource "aws_iam_policy" "policy" {
-#   policy = <<EOF
-# {
-#     "Version": "2012-10-17",
-#     "Statement": [
-#         {
-#             "Effect": "Allow",
-#             "Action": [
-#                 "s3:PutObject",
-#                 "s3:GetObject"
-#             ],
-#             "Resource": "arn:aws:s3:::${var.url}/*"
-            
-#         }
-#     ]
-# }
-# EOF
-# }
-
-# resource "aws_iam_role_policy_attachment" "policy-attach" {
-#   role       = "lee-test-executor"
-#   policy_arn = aws_iam_policy.policy.arn
-# }
-
 resource "aws_route53_zone" "zone" {
   name = replace(var.url, "www.", "")
   tags = {
@@ -90,5 +66,41 @@ resource "aws_route53_record" "txt" {
 }
 
 output "dns" {
-  value = aws_route53_zone.zone.name_servers
+  value = {
+    domain = replace(var.url, "www.", "")
+    nameservers = length(cloudflare_zone.zone) > 0 ? cloudflare_zone.zone[0].name_servers : ["none"]
+  }
+}
+
+resource "cloudflare_zone" "zone" {
+  count = substr(var.url,0,4) == "demo" ? 0 : 1
+  zone = replace(var.url, "www.", "")
+  plan = "free"
+}
+
+resource "cloudflare_record" "www" {
+  count = substr(var.url,0,4) == "demo" ? 0 : 1
+  zone_id = cloudflare_zone.zone[count.index].id
+  name    = "www"
+  value   = "${var.url}.s3-website.eu-west-2.amazonaws.com"
+  type    = "CNAME"
+  ttl     = 3600
+}
+
+resource "cloudflare_record" "A" {
+  count = substr(var.url,0,4) == "demo" ? 0 : 1
+  zone_id = cloudflare_zone.zone[count.index].id
+  name    = "@"
+  value   = "45.55.72.95"
+  type    = "A"
+  ttl     = 3600
+}
+
+resource "cloudflare_record" "txt" {
+  count = substr(var.url,0,4) == "demo" ? 0 : 1
+  zone_id = cloudflare_zone.zone[count.index].id
+  name    = "_redirect"
+  value   = "Redirects from /* to http://${var.url}/*"
+  type    = "TXT"
+  ttl     = 3600
 }
