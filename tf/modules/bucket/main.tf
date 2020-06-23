@@ -33,38 +33,6 @@ resource "aws_s3_bucket_policy" "bucket" {
         ) 
 }
 
-resource "aws_route53_zone" "zone" {
-  name = replace(var.url, "www.", "")
-  tags = {
-    customer = "magictable"
-    site = var.url
-  }
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = aws_route53_zone.zone.zone_id
-  name    = "www"
-  type    = "CNAME"
-  ttl     = 86400
-  records        = ["${var.url}.s3-website.eu-west-2.amazonaws.com"]
-}
-
-resource "aws_route53_record" "no-www" {
-  zone_id = aws_route53_zone.zone.zone_id
-  name    = ""
-  type    = "A"
-  ttl     = 86400
-  records        = ["45.55.72.95"]
-}
-
-resource "aws_route53_record" "txt" {
-  zone_id = aws_route53_zone.zone.zone_id
-  name    = "_redirect"
-  type    = "TXT"
-  ttl     = 86400
-  records        = ["Redirects from /* to http://${var.url}/*"]
-}
-
 output "dns" {
   value = {
     domain = replace(var.url, "www.", "")
