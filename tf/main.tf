@@ -1,3 +1,14 @@
+terraform {
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "chrisns"
+
+    workspaces {
+      name = "magictable"
+    }
+  }
+}
+
 provider "aws" {
   region  = "eu-west-2"
 }
@@ -30,6 +41,7 @@ resource "aws_iam_policy" "policy" {
               "arn:aws:s3:::www.thetoptomato100.com/index.html",
               "arn:aws:s3:::www.tomatoes100.com/index.html",
               "arn:aws:s3:::www.tomatoes100.net/index.html",
+              "arn:aws:s3:::www.rotten100.uk",
               "arn:aws:s3:::www.toms100films.com/index.html"
             ]
         }
@@ -158,4 +170,13 @@ module "rotten100_net" {
 
 output "rotten100_net" {
     value = module.rotten100_net.dns
+}
+
+module "rotten100_uk" {
+  source     = "./modules/bucket"
+  url       = "www.rotten100.uk"
+}
+
+output "rotten100_uk" {
+    value = module.rotten100_uk.dns
 }
