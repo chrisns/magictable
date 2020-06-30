@@ -124,33 +124,3 @@ module "rotten100_uk" {
   source     = "./modules/bucket"
   url       = "www.rotten100.uk"
 }
-
-
-
-
-# legacy route53 dns
-
-#rottenfilms100.com
-
-resource "aws_route53_zone" "rottenfilms100_com" {
-  name = "rottenfilms100.com"
-  tags = {
-    customer = "magictable"
-    site = "www.rottenfilms100.com"
-  }
-}
-
-resource "aws_route53_record" "rottenfilms100_com_www" {
-  zone_id = aws_route53_zone.rottenfilms100_com.zone_id
-  name    = "www"
-  type    = "CNAME"
-  ttl     = 86400
-  records        = ["www.rottenfilms100.com.s3-website.eu-west-2.amazonaws.com"]
-}
-resource "aws_route53_record" "rottenfilms100_com_txt" {
-  zone_id = aws_route53_zone.rottenfilms100_com.zone_id
-  name    = "_redirect"
-  type    = "TXT"
-  ttl     = 86400
-  records        = ["Redirects from /* to http://www.rottenfilms100.com/*"]
-}
