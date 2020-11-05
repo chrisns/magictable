@@ -35,6 +35,7 @@ resource "aws_iam_policy" "policy" {
               "arn:aws:s3:::www.100rotten.net/index.html",
               "arn:aws:s3:::www.rotten100.com/index.html",
               "arn:aws:s3:::www.rotten100.net/index.html",
+              "arn:aws:s3:::www.rottenfilms100.com/index.html",
               "arn:aws:s3:::www.rotten100films.com/index.html",
               "arn:aws:s3:::www.rt100films.com/index.html",
               "arn:aws:s3:::www.rt100movies.com/index.html",
