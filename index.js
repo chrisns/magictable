@@ -39,18 +39,21 @@ const handler = (domain, a, b, url) => {
       })
       return s3.putObject({ Body: html }).promise()
     })
+    .then(response => {
+      return `<html><body><h1>Done! <a href="#" onClick="window.history.back(); return false">Go back to adjuster</a></h1><pre>${JSON.stringify(response)}</pre></body></html>`
+    })
 }
 api.get('/{domain}/{a}/{b}/{base}', function (request) {
   return handler(request.pathParams.domain, request.pathParams.a, request.pathParams.b, decodeURIComponent(request.pathParams.base))
-})
+}, { success: { contentType: 'text/html' } })
 
-api.get('/{domain}', function () {
+api.get('/{domain}', function (request) {
   return `<html><body>
-<form onsubmit="window.location = window.location + '/' + document.forms[0].elements.a.value + '/' + document.forms[0].elements.b.value + '/' + encodeURIComponent(document.forms[0].elements.base.value); return false">
-<label for="a">a:</label>
-<input type="number" id="a" name="a" min="1" max="100"><br><br>
-<label for="b">b:</label>
-<input type="number" id="b" name="b" min="1" max="100"><br><br>
+<form onsubmit="window.open('http://${request.pathParams.domain}'); window.location = window.location + '/' + document.forms[0].elements.a.value + '/' + document.forms[0].elements.b.value + '/' + encodeURIComponent(document.forms[0].elements.base.value); return false">
+<label for="a">Original Position:</label>
+<input type="number" id="a" name="a" min="1" max="100" value="1"><br><br>
+<label for="b">Swap with (Spectator choice):</label>
+<input type="number" id="b" name="b" min="1" max="100" value="1"><br><br>
 <label for="base">Base</label>
 <select name="base" id="base">
   <option selected="selected" value="https://www.rottentomatoes.com/top/bestofrt/">https://www.rottentomatoes.com/top/bestofrt/ - current</option>
