@@ -6,7 +6,7 @@ const api = new ApiBuilder()
 
 const fetch = require('node-fetch')
 const handler = (domain, a, b, url) => {
-  return fetch(url)
+  return fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15" } })
     .then(res => res.text())
     .then(res => new JSDOM(res, { pretendToBeVisual: true }))
     .then(dom => {
@@ -16,7 +16,7 @@ const handler = (domain, a, b, url) => {
       base.setAttribute('href', url)
       const script = dom.window.document.createElement('script')
 
-      script.appendChild(dom.window.document.createTextNode('setInterval(function () { jQuery("table.table").load(`${window.location.href}?${Math.floor(Date.now()/1000)} table.table`) }, 1000)')) // eslint-disable-line no-template-curly-in-string
+      script.appendChild(dom.window.document.createTextNode('var thetimer = setInterval(function () { jQuery("table.table").load(`${window.location.href}?${Math.floor(Date.now()/1000)} table.table`) }, 1000); setTimeout(function() {clearInterval(thetimer)}, 1000*60*60*4)')) // eslint-disable-line no-template-curly-in-string
 
       dom.window.document.head.appendChild(base)
       dom.window.document.body.appendChild(script)
@@ -29,6 +29,7 @@ const handler = (domain, a, b, url) => {
       return dom
     })
     .then(dom => dom.serialize())
+    .then(dom => console.log(dom))
     .then(html => {
       const s3 = new AWS.S3({
         params: {
@@ -67,3 +68,4 @@ api.get('/{domain}', function (request) {
 }, { success: { contentType: 'text/html' } })
 
 module.exports = api
+handler("foo.com", 1, 1, "https://www.rottentomatoes.com/top/bestofrt/")
