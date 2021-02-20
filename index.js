@@ -61,6 +61,7 @@ api.get('/{domain}', function (request) {
   <option value="http://demo.zoomfab.info/21-07-2020.html">https://www.rottentomatoes.com/top/bestofrt/ - 21-07-2020</option>
   <option value="http://demo.zoomfab.info/06-11-2020.html">https://www.rottentomatoes.com/top/bestofrt/ - 06-11-2020</option>
   <option value="http://demo.zoomfab.info/14-12-2020.html">https://www.rottentomatoes.com/top/bestofrt/ - 14-12-2020</option>
+  <option value="http://demo.zoomfab.info/20-02-2021.html">https://www.rottentomatoes.com/top/bestofrt/ - 20-02-2020</option>
 </select>
 <br><br>
 <input type="submit" value="Submit">
