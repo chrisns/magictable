@@ -29,7 +29,6 @@ const handler = (domain, a, b, url) => {
       return dom
     })
     .then(dom => dom.serialize())
-    .then(dom => console.log(dom))
     .then(html => {
       const s3 = new AWS.S3({
         params: {
