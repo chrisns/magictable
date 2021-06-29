@@ -35,7 +35,6 @@ resource "aws_iam_policy" "policy" {
               "arn:aws:s3:::www.rotten100.net/index.html",
               "arn:aws:s3:::www.rottenfilms100.com/index.html",
               "arn:aws:s3:::www.thetoptomato100.com/index.html",
-              "arn:aws:s3:::www.tomatoes100.net/index.html",
               "arn:aws:s3:::www.rotten100.uk"
             ]
         }
@@ -67,11 +66,6 @@ module "rottenfilms100" {
 module "thetoptomato100" {
   source     = "./modules/bucket"
   url       = "www.thetoptomato100.com"
-}
-
-module "tomatoes100_net" {
-  source     = "./modules/bucket"
-  url       = "www.tomatoes100.net"
 }
 
 module "rotten100_net" {
