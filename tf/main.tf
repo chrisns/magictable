@@ -32,7 +32,6 @@ resource "aws_iam_policy" "policy" {
             "Resource": [
               "arn:aws:s3:::demo.zoomfab.info/index.html",
               "arn:aws:s3:::www.100rotten.com/index.html",
-              "arn:aws:s3:::www.100rotten.net/index.html",
               "arn:aws:s3:::www.rotten100.com/index.html",
               "arn:aws:s3:::www.rotten100.net/index.html",
               "arn:aws:s3:::www.rottenfilms100.com/index.html",
@@ -74,11 +73,6 @@ module "thetoptomato100" {
 module "_100rotten_com" {
   source     = "./modules/bucket"
   url       = "www.100rotten.com"
-}
-
-module "_100rotten_net" {
-  source     = "./modules/bucket"
-  url       = "www.100rotten.net"
 }
 
 module "tomatoes100_net" {
