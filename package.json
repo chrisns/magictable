@@ -10,7 +10,7 @@
   "author": "Chris Nesbitt-Smith",
   "license": "MIT",
   "dependencies": {
-    "claudia": "^5.13.1",
+    "claudia": "^5.14.0",
     "claudia-api-builder": "^4.1.2",
     "jquery": "^3.6.0",
     "jsdom": "^18.0.0",
