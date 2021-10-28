@@ -17,7 +17,7 @@
     "node-fetch": "^2.6.1"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.1007.0"
+    "aws-sdk": "^2.1016.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
